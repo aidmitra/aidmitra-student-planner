@@ -106,10 +106,10 @@ main{padding-top:32px}.topbar{margin-bottom:27px}.eyebrow{letter-spacing:1.8px;f
   </div>
   <div class="panel" style="margin-top:15px">
    <div class="panel-head"><h3>Cloud sync & student account</h3><span class="tag" id="cloudBadge">Local only</span></div>
-   <p class="smallmuted">Sign in to sync your planner across devices. To enable cloud sync, create a Supabase project and add its project URL and public anon key below. Never paste a service-role key here.</p>
+   <p class="smallmuted">Sign in to sync your planner across devices. AidMitra cloud sync is preconfigured. These technical settings are for the app owner only; never enter a service-role or secret key here.</p>
    <div class="formgrid">
-    <div class="field full"><label for="supabaseUrl">Supabase project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
-    <div class="field full"><label for="supabaseKey">Supabase publishable / anon key</label><input id="supabaseKey" placeholder="Public client key (not service-role)"></div>
+    <div class="field full"><label for="supabaseUrl">Supabase project URL (owner settings)</label><input id="supabaseUrl" placeholder="Configured by AidMitra"></div>
+    <div class="field full"><label for="supabaseKey">Supabase publishable key (owner settings)</label><input id="supabaseKey" placeholder="Configured by AidMitra" autocomplete="off"></div>
     <div class="field"><label for="accountEmail">Email</label><input id="accountEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
     <div class="field"><label for="accountPassword">Password</label><input id="accountPassword" type="password" placeholder="At least 8 characters" autocomplete="current-password"></div>
    </div>
@@ -122,7 +122,7 @@ main{padding-top:32px}.topbar{margin-bottom:27px}.eyebrow{letter-spacing:1.8px;f
   </div>
   <div class="panel" style="margin-top:15px">
    <div class="panel-head"><h3>Your data</h3></div>
-   <p class="smallmuted">Export a JSON backup or restore a previous backup. Data is local to this browser until cloud sync is added.</p>
+   <p class="smallmuted">Export a JSON backup or restore a previous backup. Your planner is stored in this browser and can sync to your AidMitra account when you sign in.</p>
    <div class="toolbar-actions"><button class="secondary" onclick="exportBackup()">Export backup</button><label class="secondary" style="display:inline-flex;align-items:center">Import backup <input type="file" accept=".json,application/json" style="display:none" onchange="importBackup(event)"></label><button class="danger" onclick="resetAll()">Reset all data</button></div>
   </div>
  </section>
@@ -145,10 +145,11 @@ function loadState(){try{return JSON.parse(localStorage.getItem(STORE))||{classe
 function loadSettings(){try{return {...{remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""},...JSON.parse(localStorage.getItem(SETTINGS)||"{}")}}catch(e){return {remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""}}}
 function persist(){localStorage.setItem(STORE,JSON.stringify(state));render();maybeAutoSync()}
 function persistSettings(){localStorage.setItem(SETTINGS,JSON.stringify(settings))}
-function loadCloudConfig(){try{return JSON.parse(localStorage.getItem("aidmitra_v3_cloud")||"{}")}catch(e){return {}}}
+const DEFAULT_CLOUD_CONFIG={url:"https://cxkwepkwvvvpgefipmad.supabase.co",key:"sb_publishable_1DDleytua6XmlwP5PbaCxQ_8RFGHkmS"};
+function loadCloudConfig(){try{return {...DEFAULT_CLOUD_CONFIG,...JSON.parse(localStorage.getItem("aidmitra_v3_cloud")||"{}")}}catch(e){return {...DEFAULT_CLOUD_CONFIG}}}
 function persistCloudConfig(){localStorage.setItem("aidmitra_v3_cloud",JSON.stringify(cloudConfig))}
 function initCloudClient(){
-  if(!cloudConfig.url||!cloudConfig.key||!window.supabase?.createClient){supabaseClient=null;updateCloudUI("Cloud sync not configured.");return}
+  if(!cloudConfig.url||!cloudConfig.key||!window.supabase?.createClient){supabaseClient=null;updateCloudUI("Cloud sync is not available. Check the app configuration.");return}
   try{
     supabaseClient=window.supabase.createClient(cloudConfig.url,cloudConfig.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
     supabaseClient.auth.getSession().then(({data})=>{cloudUser=data?.session?.user||null;updateCloudUI(cloudUser?`Signed in as ${cloudUser.email||"student"}.`:"Configured. Sign in or create an account.");if(cloudUser)syncCloudNow();});
