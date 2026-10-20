@@ -1,39 +1,100 @@
-# AidMitra Student Planner — Supabase-configured build — initialization-order fix
+# AidMitra Student Planner — MVP 2.0
 
-This build has AidMitra's existing Supabase project URL and **publishable** client key preconfigured, so students do not need to enter Supabase credentials themselves.
+A mobile-first student organiser with timetable management, assignments, exam countdowns, smart study suggestions, timetable import, calendar import, and reminder settings.
 
-## Publish to the existing GitHub Pages repository
+## Quick start
 
+**Recommended (for service worker / PWA support):**
 1. Extract this ZIP.
-2. Open your repository: https://github.com/aidmitra/aidmitra-student-planner
-3. Choose **Add file → Upload files**.
-4. Upload the six files from this folder to the repository root, replacing files with the same names.
-5. Commit the changes to `main`.
-6. Wait for GitHub Pages to redeploy, then refresh https://aidmitra.github.io/aidmitra-student-planner/ . If the old version remains, hard-refresh or clear the site cache.
+2. Install a current version of Node.js if you do not already have it.
+3. In this folder, run `npx serve .` (or use another local static HTTP server).
+4. Open the local URL printed by the server in Chrome.
+5. On Android Chrome, use **⋮ → Add to Home screen** to install the PWA.
 
-## Supabase checklist
+You can also open `index.html` directly for most core features, but service worker/offline shell and some browser capabilities require HTTP/HTTPS.
 
-- The app uses the configured project URL and public publishable key in client-side code. Publishable keys are designed to be public; never use a `service_role` or secret key in the website.
-- Ensure `supabase_schema.sql` has been run in the existing project's SQL Editor.
-- In Supabase Authentication settings, set the Site URL to `https://aidmitra.github.io` and add `https://aidmitra.github.io/aidmitra-student-planner/**` (or the exact callback URLs required by the project's auth configuration) to allowed redirect URLs.
-- Test signup and sign-in. If email confirmation is enabled, confirm the message before signing in.
-- Test with two separate student accounts and verify Row Level Security prevents users from reading or changing each other's planner data.
+## MVP 3.0 features
 
-## Important
+- Email/password student accounts using Supabase Auth.
+- Optional cloud sync of planner data between devices, with row-level security (RLS).
+- First sync merges records from the current device and cloud by item ID; subsequent syncs push the current local planner.
+- Local-only mode remains available if no Supabase project is configured.
 
-This change preconfigures the client connection; it does not itself verify that the live Supabase database schema, authentication settings, or row-level security are correct. Keep the public repository limited to client-side publishable credentials. Do not upload database passwords, access tokens, or secret/service-role keys.
+## MVP 2.0 features
+
+- Responsive dashboard, weekly timetable, assignment tracker, exam countdown, study suggestions.
+- Add/remove classes, tasks, and exams.
+- Timetable import from CSV; import from text-based PDF; OCR for timetable images and scanned first-page PDFs using Tesseract.js and PDF.js loaded from CDNs.
+- Import `.ics` calendar events into the timetable.
+- Google Calendar read-only import, if you configure your own Google OAuth Client ID and enable the Google Calendar API.
+- Smart reminders for classes, upcoming/overdue assignments, and exams (7, 3, 1 days and exam day).
+- Reminder preferences and test notification.
+- JSON backup export/import.
+- Basic PWA manifest, app icon, service worker shell cache.
+- Data persists in local browser storage.
+
+## CSV import format
+
+Recommended header row:
+`Subject,Day,Start,End,Room,Teacher`
+
+Example:
+`Pharmacology,Monday,09:00,10:00,Block A,Dr Smith`
+
+Time formats such as `09:00`, `9:00 AM`, and `2:30 PM` are supported. Review every extracted row before importing; OCR may misread text.
+
+## Google Calendar setup
+
+Google Calendar integration is optional and uses the student's own Google Cloud project:
+1. Open Google Cloud Console and create/select a project.
+2. Enable **Google Calendar API**.
+3. Configure the OAuth consent screen and create an OAuth Client ID of type **Web application**.
+4. Add your local/deployed app origin (for example `http://localhost:3000`) to **Authorised JavaScript origins**.
+5. Paste the Client ID in AidMitra Settings → Calendar import / Google Calendar.
+6. Select **Connect Google Calendar** and grant read-only calendar access.
+
+This implementation imports timed events from the primary calendar for the next 90 days. It is a one-time import, not continuous two-way synchronisation. Events are imported into AidMitra's class list. It skips all-day events. For a production release, configure OAuth consent/verification as applicable and implement token lifecycle handling, event deduplication/update/deletion, recurring class logic, and a secure backend if needed.
+
+## Notification limitations (important)
+
+- The app asks for browser notification permission and checks for reminders every 30 seconds while the page/app is running.
+- A service worker is included for PWA shell caching and notification-click handling, but it does **not** itself schedule alarms.
+- Browser JavaScript timers cannot reliably run when the app is closed or the phone suspends it. Reliable background alerts require a push backend plus service-worker push subscription, or native Android local-notification scheduling (for example Capacitor + a local notifications plugin).
+- Keep the app open for this MVP's scheduled reminder checks. Test notifications need notification permission and HTTPS/localhost in most browsers.
+
+## Data and privacy
+
+- Data is stored locally in the browser's `localStorage`. It is not backed up to a server or synced across devices.
+- Google Calendar access is read-only and granted by the student through Google sign-in. Only event information returned by the Calendar API is imported.
+- The OCR/PDF parser libraries load from public CDNs when needed; the selected file is processed in the browser. No AidMitra backend is used in this prototype.
+- Do not enter sensitive personal information in this MVP.
+
+## Suggested next production phase
+
+1. Add authentication and a secure cloud database for cross-device sync.
+2. Add server/native background reminders and user-configurable quiet hours.
+3. Improve timetable extraction using a column-aware parser and import preview with course/time conflict detection.
+4. Add recurring weekly class rules, semester dates, holidays, and rescheduling.
+5. Add Android package, automated tests, error reporting, and accessibility testing.
 
 
-## Navigation fix (MVP 3.4)
-This version adds direct navigation handlers to the sidebar and updates the service-worker cache strategy so the latest page is fetched on refresh. Upload all six files to the repository root and commit to `main`. After deployment, open the site and hard-refresh with Ctrl+Shift+R. On Android, if the old page remains, clear the site data/cache for aidmitra.github.io or open the site in a private tab once.
+## Cloud sync setup (Supabase)
+
+1. Create a project at Supabase.
+2. Open **SQL Editor** and run `supabase_schema.sql` from this project.
+3. In Supabase project settings, copy the project URL and the public anon/publishable key.
+4. In AidMitra Settings → Cloud sync & student account, paste the URL and public key, then select **Save configuration**.
+5. Create an account using email/password. If email confirmation is enabled, confirm the email first and then sign in.
+6. Use **Sync now** to sync the current planner. Once signed in, edits trigger a best-effort sync after a short debounce.
+
+### Cloud sync limitations
+- This is an MVP sync model, not a production conflict-resolution system. First sign-in merges records by item ID. After that, the local planner is treated as the working copy and pushed to the cloud. For reliable multi-device concurrent edits, add per-record timestamps, tombstones for deletions, conflict UI, and server-side transactional merge.
+- Sync is initiated from the open app; it is not a background sync service.
+- The Supabase URL and public anon/publishable key are stored in browser local storage. This is expected for client apps; Row Level Security must be enabled exactly as in `supabase_schema.sql`.
+- Do not use the Supabase `service_role` key in the browser.
+- Authentication emails and password policy are controlled by your Supabase project.
 
 
-## MVP 3.5 button interaction fix
-This build explicitly binds the Add class, Add task, Add exam, and Import timetable buttons and exposes app handlers on `window` for reliable browser interaction. The service-worker cache version was bumped to force the updated app shell to replace the previous cached build.
+## Email confirmation redirect fix (MVP 3.1)
 
-After uploading the files, wait for GitHub Pages to deploy, then hard-refresh the site. If using an installed PWA on Android, fully close it and reopen it; if it still shows the old build, clear site data for `aidmitra.github.io` and reopen the site.
-
-
-## Fix in this build
-
-The startup failure was caused by `loadCloudConfig()` running before `DEFAULT_CLOUD_CONFIG` was initialized. That exception stopped the rest of the main script, which left `selectedDay`, `modalType`, and `importRows` uninitialized and made navigation/modal/import clicks throw ReferenceErrors. The default config is now declared before startup initialization, and the service-worker cache was bumped to `aidmitra-shell-v7`.
+The signup flow now explicitly redirects email confirmation to the current app path, including the GitHub Pages repository subfolder. For the hosted version, open `https://aidmitra.github.io/aidmitra-student-planner/` before creating an account; do not create the account from `localhost`. In Supabase Authentication → URL Configuration, set Site URL to `https://aidmitra.github.io/aidmitra-student-planner/` and add that same exact URL under Redirect URLs. Save changes, then create/resend a fresh confirmation email. Old confirmation links can expire or retain an old redirect target.
