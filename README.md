@@ -26,3 +26,9 @@ This change preconfigures the client connection; it does not itself verify that 
 
 ## Navigation fix (MVP 3.4)
 This version adds direct navigation handlers to the sidebar and updates the service-worker cache strategy so the latest page is fetched on refresh. Upload all six files to the repository root and commit to `main`. After deployment, open the site and hard-refresh with Ctrl+Shift+R. On Android, if the old page remains, clear the site data/cache for aidmitra.github.io or open the site in a private tab once.
+
+
+## MVP 3.5 button interaction fix
+This build explicitly binds the Add class, Add task, Add exam, and Import timetable buttons and exposes app handlers on `window` for reliable browser interaction. The service-worker cache version was bumped to force the updated app shell to replace the previous cached build.
+
+After uploading the files, wait for GitHub Pages to deploy, then hard-refresh the site. If using an installed PWA on Android, fully close it and reopen it; if it still shows the old build, clear site data for `aidmitra.github.io` and reopen the site.

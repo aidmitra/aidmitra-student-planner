@@ -59,16 +59,16 @@ main{padding-top:32px}.topbar{margin-bottom:27px}.eyebrow{letter-spacing:1.8px;f
   <div class="footer-note">Your data is currently stored in this browser. Use Settings to configure reminders or import/export a backup.</div>
  </section>
  <section id="timetable" class="view">
-  <div class="toolbar"><h2>Class timetable</h2><div class="toolbar-actions"><button class="secondary" onclick="openImport()">⇧ Import timetable</button><button class="primary" onclick="openModal('class')">＋ Add class</button></div></div>
+  <div class="toolbar"><h2>Class timetable</h2><div class="toolbar-actions"><button class="secondary" id="openImportBtn" type="button">⇧ Import timetable</button><button class="primary" id="addClassBtn" type="button">＋ Add class</button></div></div>
   <div class="notice">Add classes manually, import a PDF/image/CSV, or import a calendar file (.ics). Imported rows are reviewed before they are added.</div>
   <div class="daychips" id="dayChips"></div><div class="panel"><div id="timetableList" class="list"></div></div>
  </section>
  <section id="assignments" class="view">
-  <div class="toolbar"><h2>Assignments</h2><button class="primary" onclick="openModal('task')">＋ Add task</button></div>
+  <div class="toolbar"><h2>Assignments</h2><button class="primary" id="addTaskBtn" type="button">＋ Add task</button></div>
   <div class="panel"><div class="panel-head"><h3>Deadline tracker</h3><span class="tag" id="taskProgressLabel">0 completed</span></div><div id="taskProgress"></div><div id="taskList" class="list" style="margin-top:13px"></div></div>
  </section>
  <section id="exams" class="view">
-  <div class="toolbar"><h2>Examination countdown</h2><button class="primary" onclick="openModal('exam')">＋ Add exam</button></div>
+  <div class="toolbar"><h2>Examination countdown</h2><button class="primary" id="addExamBtn" type="button">＋ Add exam</button></div>
   <div class="panel"><div id="examList" class="list"></div></div>
  </section>
  <section id="planner" class="view">
@@ -289,6 +289,12 @@ function closeModal(){$("#modalBackdrop").classList.remove("open")}
 $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
 $("#itemForm").addEventListener("submit",e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target).entries()),item={...f,id:uid(),createdAt:new Date().toISOString()};if(modalType==="class"){item.color=["#3768d8","#39a57a","#8a63d2","#e49b36","#d45d76"][state.classes.length%5];state.classes.push(item)}else if(modalType==="task"){item.done=false;state.tasks.push(item)}else state.exams.push(item);closeModal();persist()});
 function openImport(){$("#importBackdrop").classList.add("open");$("#importStatus").textContent="";$("#importPreview").innerHTML="";$("#confirmImport").disabled=true;importRows=[]}
+function runButtonAction(action,label){try{action()}catch(error){console.error("AidMitra action failed:",error);alert("AidMitra could not open this feature. Refresh the page once. If it continues, send us this error: "+(error?.message||String(error)));}}
+// Bind primary creation/import controls explicitly instead of relying on inline HTML handlers.
+$("#addClassBtn")?.addEventListener("click",()=>runButtonAction(()=>openModal("class"),"Add class"));
+$("#addTaskBtn")?.addEventListener("click",()=>runButtonAction(()=>openModal("task"),"Add task"));
+$("#addExamBtn")?.addEventListener("click",()=>runButtonAction(()=>openModal("exam"),"Add exam"));
+$("#openImportBtn")?.addEventListener("click",()=>runButtonAction(openImport,"Import timetable"));
 function closeImport(){$("#importBackdrop").classList.remove("open")}
 $("#importBackdrop").addEventListener("click",e=>{if(e.target.id==="importBackdrop")closeImport()});
 $("#timetableFile").addEventListener("change",async e=>{let file=e.target.files[0];if(!file)return;$("#importStatus").textContent="Reading file…";$("#importPreview").innerHTML="";$("#confirmImport").disabled=true;try{let text="";let ext=file.name.split(".").pop().toLowerCase();if(ext==="ics"){importRows=parseICS(await file.text());renderImportPreview();return}if(ext==="csv"){text=await file.text();importRows=parseCSV(text);renderImportPreview();return}if(ext==="pdf"){text=await readPDF(file)}else if(file.type.startsWith("image/")){text=await readImage(file)}else throw Error("Unsupported file type.");importRows=parseTimetableText(text);renderImportPreview()}catch(err){$("#importStatus").textContent="Could not automatically read this file: "+err.message+". Try a clearer image/PDF or use CSV/manual entry."}});
@@ -318,6 +324,8 @@ function exportBackup(){let blob=new Blob([JSON.stringify({state,settings,export
 function importBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);state=v.state||v;settings={...settings,...(v.settings||{})};persist();persistSettings();updateNotifyStatus();alert("Backup imported.")}catch(err){alert("That backup file could not be read.")}};r.readAsText(f)}
 function resetAll(){if(confirm("Delete all AidMitra classes, tasks, exams and profile data from this browser?")){state={classes:[],tasks:[],exams:[],profile:{}};persist()}}
 function initSettings(){ $("#supabaseUrl").value=cloudConfig.url||"";$("#supabaseKey").value=cloudConfig.key||""; $("#studentName").value=state.profile?.name||"";$("#studentCourse").value=state.profile?.course||"";$("#googleClientId").value=settings.googleClientId||"";updateNotifyStatus();$("#googleStatus").textContent=settings.googleClientId?"Client ID saved; calendar not connected in this session.":"Google Calendar not connected."}
+// Explicitly expose handlers used by generated cards and legacy inline controls.
+Object.assign(window,{switchView,selectDay,openModal,closeModal,openImport,closeImport,confirmImportedRows,removeItem,toggleTask,generateStudyPlan,saveProfile,saveReminderSettings,testNotification,connectGoogleCalendar,saveGoogleConfig,saveCloudConfig,signOutCloud,signInCloud,signUpCloud,syncCloudNow,exportBackup,importBackup,resetAll});
 render();initSettings();initCloudClient();
 if("serviceWorker"in navigator&&location.protocol!=="file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{})}
 setInterval(checkReminders,30000);checkReminders();
