@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#142b4a">
-<title>AidMitra — Student Planner MVP 3.0</title>
+<title>AidMitra — Student Planner MVP 3.8</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--navy:#142b4a;--navy2:#203d63;--blue:#3768d8;--mint:#c9f4df;--bg:#f4f7fb;--ink:#17243a;--muted:#718096;--line:#e3eaf3;--white:#fff;--red:#c84350;--green:#278153;--amber:#a96c11;--shadow:0 10px 35px #1b35500a}
@@ -14,19 +14,30 @@
 main{padding:28px clamp(16px,3vw,36px) 48px;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:25px}.eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:800}.topbar h1{font-size:clamp(25px,3vw,34px);letter-spacing:-1.2px;margin:4px 0 0}.avatar{width:43px;height:43px;border-radius:50%;background:var(--mint);color:#18573c;display:grid;place-items:center;font-weight:900}
 .view{display:none}.view.active{display:block}.hero{background:linear-gradient(115deg,#183456,#2b5d92);color:white;border-radius:22px;padding:25px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:18px}.hero .date{font-size:12px;color:#bfd2e8}.hero h2{font-size:25px;letter-spacing:-.8px;margin:7px 0}.hero p{margin:0;color:#d6e4f3;max-width:490px}.hero-symbol{font-size:58px;opacity:.9}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:19px}.stat,.panel{background:white;border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.stat{padding:16px}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:650}.stat-icon{width:33px;height:33px;display:grid;place-items:center;border-radius:10px;background:#edf2ff;color:#3159aa}.stat-num{font-size:29px;font-weight:850;letter-spacing:-1px;margin:9px 0 1px}.stat-sub{font-size:11px;color:var(--muted)}.columns{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.panel{padding:18px;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.panel h3{margin:0;font-size:15px;letter-spacing:-.2px}.linkbtn{background:transparent;color:var(--blue);font-size:12px;font-weight:800;padding:5px}.list{display:grid;gap:9px}.item{padding:12px;border:1px solid var(--line);border-radius:13px;display:flex;align-items:flex-start;gap:10px;min-width:0;background:#fff}.dot{width:9px;height:9px;border-radius:50%;background:var(--blue);margin-top:5px;flex-shrink:0}.time{font-size:11px;color:var(--muted);min-width:61px}.item-main{flex:1;min-width:0}.item-title{font-weight:780;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}.tag{font-size:10px;border-radius:7px;padding:4px 7px;background:#edf2ff;color:#345da9;white-space:nowrap;font-weight:750}.tag.red{background:#fff0f1;color:var(--red)}.tag.green{background:#e7f8ef;color:var(--green)}.tag.amber{background:#fff5df;color:var(--amber)}.empty{padding:22px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--line);border-radius:13px}.primary{background:var(--blue);color:white;border-radius:10px;padding:10px 13px;font-weight:800;font-size:12px}.secondary{background:#edf2fb;color:#2c4b7e;border-radius:10px;padding:9px 11px;font-size:12px;font-weight:750}.danger{background:#fff0f1;color:#b53c47;border-radius:8px;padding:6px 8px;font-size:11px;font-weight:700}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{font-size:22px;margin:0;letter-spacing:-.6px}.toolbar-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.daychips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}.daychips button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--muted);font-size:11px;font-weight:750}.daychips button.active{background:var(--navy);border-color:var(--navy);color:white}.notice{padding:12px 14px;border-radius:12px;background:#edf4ff;color:#33527d;font-size:12px;margin-bottom:14px}.notice.warn{background:#fff5df;color:#865a13}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted);font-weight:800}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}.modal-backdrop{display:none;position:fixed;inset:0;background:#0b1b2c99;z-index:20;align-items:center;justify-content:center;padding:15px}.modal-backdrop.open{display:flex}.modal{background:#fff;border-radius:19px;padding:22px;width:min(610px,100%);max-height:92vh;overflow:auto;box-shadow:0 25px 80px #0003}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.modal-head h3{margin:0;font-size:18px}.close{width:31px;height:31px;border-radius:9px;background:#eff3f8}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.footer-note{font-size:11px;color:var(--muted);margin-top:18px}.exam-count{font-size:12px;color:var(--red);font-weight:800;margin-top:5px}.progress-wrap{height:7px;border-radius:20px;background:#edf1f6;overflow:hidden;margin-top:10px}.progress-bar{height:100%;background:#3c9b70;border-radius:20px}.task-actions{display:flex;gap:5px;align-items:center}.section-label{font-size:11px;font-weight:850;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin:16px 0 9px}.upload-drop{border:1px dashed #b6c6dc;border-radius:13px;padding:18px;text-align:center;background:#f8faff}.upload-drop input{max-width:100%;margin-top:10px}.preview-row{display:grid;grid-template-columns:1.2fr .8fr .8fr .8fr;gap:6px;align-items:center;padding:8px;border-bottom:1px solid var(--line);font-size:11px}.preview-row input,.preview-row select{min-width:0;width:100%;padding:7px;border:1px solid var(--line);border-radius:7px}.smallmuted{font-size:11px;color:var(--muted)}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.toggle-row:last-child{border-bottom:0}
 @media(max-width:780px){.app{display:block}.sidebar{position:sticky;top:0;z-index:5;padding:11px 12px;display:block}.brand{padding:0 3px}.brand small,.sidebar-bottom{display:none}.nav{display:flex;overflow-x:auto;gap:5px;margin-top:10px}.nav button{white-space:nowrap;padding:9px 11px;font-size:11px}.nav .ico{display:none}main{padding:19px 13px 35px}.columns{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:11px}.stat-num{font-size:24px}.stat-sub{font-size:10px}.hero{padding:19px}.hero h2{font-size:21px}.hero-symbol{font-size:43px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start}.toolbar .primary{white-space:nowrap}.preview-row{grid-template-columns:1fr 1fr}.preview-row>*:nth-child(3),.preview-row>*:nth-child(4){margin-top:4px}}
+
+/* AidMitra visual refresh — calm, premium, student-first */
+:root{--navy:#172c46;--navy2:#284b70;--blue:#4968e8;--mint:#bff4d7;--bg:#f5f7fc;--ink:#17253b;--muted:#748197;--line:#e7ebf3;--shadow:0 8px 28px rgba(28,48,80,.055)}
+body{background:radial-gradient(ellipse at 80% -15%,#e7edff 0,transparent 35%),var(--bg);letter-spacing:-.08px}
+.sidebar{background:linear-gradient(165deg,#172c46 0%,#203b5c 100%);padding:29px 16px;gap:30px}
+.brand{gap:12px;font-size:22px;letter-spacing:-.9px}.brand small{font-size:8px;letter-spacing:1.25px;color:#a8bdd4;margin-top:4px}.logo{width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#c9ffe0,#a5eac5);box-shadow:0 5px 16px #06192b30}.logo svg{width:34px;height:34px}
+.nav{gap:7px}.nav button{padding:13px 14px;border-radius:13px;transition:background .18s,transform .18s}.nav button:hover{transform:translateX(2px)}.nav button.active{background:linear-gradient(100deg,#365779,#2a4868);box-shadow:inset 3px 0 #bff4d7;color:#fff}
+main{padding-top:32px}.topbar{margin-bottom:27px}.eyebrow{letter-spacing:1.8px;font-size:10px}.topbar h1{letter-spacing:-1.4px;font-weight:820}.avatar{background:#d9e2ff;color:#364dc1;border:3px solid #fff;box-shadow:0 3px 12px #1c355010}
+.hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#172c46 0%,#274b73 65%,#4865ba 100%);border-radius:25px;padding:29px 30px;box-shadow:0 15px 35px #203c5c20}.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #ffffff19;border-radius:50%;right:-70px;top:-105px;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff06}.hero h2{font-size:28px;letter-spacing:-1.1px}.hero p{font-size:13px;line-height:1.7}.hero-symbol{font-size:52px;color:#c8f8dc;text-shadow:0 0 35px #c8f8dc35;z-index:1}
+.stat,.panel{border-color:#e8edf5;border-radius:19px;box-shadow:0 5px 20px #1c355008;transition:box-shadow .2s,transform .2s}.stat:hover{transform:translateY(-2px);box-shadow:0 9px 25px #1c355010}.stat{padding:17px}.stat-icon{border-radius:11px;background:#edf0ff;color:#4c60d8}.stat-num{letter-spacing:-1.4px}.panel{padding:20px}.panel h3{font-size:15px;font-weight:800}.item{border-color:#edf0f6;border-radius:13px;transition:border-color .15s,background .15s}.item:hover{border-color:#d6def8;background:#fcfcff}.primary{background:linear-gradient(135deg,#506be9,#4058d3);box-shadow:0 4px 10px #4968e820;transition:transform .15s,box-shadow .15s}.primary:hover{transform:translateY(-1px);box-shadow:0 7px 15px #4968e833}.secondary{background:#eef1ff;color:#4055b7}.daychips button{border-radius:10px}.daychips button.active{background:#203a5a;border-color:#203a5a;box-shadow:0 4px 10px #203a5a20}.sync-card{background:#ffffff08;line-height:1.6}.footer-note{padding:0 3px;line-height:1.7}
+@media(max-width:780px){.sidebar{background:#172c46;padding:12px 13px 10px}.brand{font-size:19px}.logo{width:36px;height:36px;border-radius:12px}.logo svg{width:29px;height:29px}.nav{margin-top:11px}.nav button.active{box-shadow:inset 0 -2px #bff4d7}.nav button:hover{transform:none}main{padding-top:20px}.hero{padding:21px;border-radius:21px}.hero h2{font-size:23px}.hero-symbol{font-size:39px}.panel{padding:15px}.stat{border-radius:15px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar">
- <div class="brand"><div class="logo">A</div><div>AidMitra<small>STUDENT PLANNER</small></div></div>
+ <div class="brand"><div class="logo"><svg viewBox="0 0 48 48" aria-label="AidMitra logo"><path d="M8 14c6-3 11-2 16 2v21c-5-4-10-5-16-2z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/><path d="M40 14c-6-3-11-2-16 2v21c5-4 10-5 16-2z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/><path d="M24 8v5M21.5 10.5h5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><div>AidMitra<small>YOUR STUDENT LIFE, IN SYNC</small></div></div>
  <nav class="nav" aria-label="Main navigation">
-  <button class="active" data-view="dashboard"><span class="ico">◫</span>Dashboard</button>
-  <button data-view="timetable"><span class="ico">▦</span>Timetable</button>
-  <button data-view="assignments"><span class="ico">✓</span>Assignments</button>
-  <button data-view="exams"><span class="ico">◷</span>Exams</button>
-  <button data-view="planner"><span class="ico">✦</span>Study plan</button>
-  <button data-view="settings"><span class="ico">⚙</span>Settings</button>
+  <button class="active" data-view="dashboard" onclick="switchView('dashboard')"><span class="ico">◫</span>Dashboard</button>
+  <button data-view="timetable" onclick="switchView('timetable')"><span class="ico">▦</span>Timetable</button>
+  <button data-view="assignments" onclick="switchView('assignments')"><span class="ico">✓</span>Assignments</button>
+  <button data-view="exams" onclick="switchView('exams')"><span class="ico">◷</span>Exams</button>
+  <button data-view="planner" onclick="switchView('planner')"><span class="ico">✦</span>Study plan</button>
+  <button data-view="settings" onclick="switchView('settings')"><span class="ico">⚙</span>Settings</button>
  </nav>
  <div class="sidebar-bottom"><div class="sync-card"><strong>Make room to focus.</strong>AidMitra helps you plan ahead, one class and one deadline at a time.</div></div>
 </aside>
@@ -48,16 +59,16 @@ main{padding:28px clamp(16px,3vw,36px) 48px;min-width:0}.topbar{display:flex;ali
   <div class="footer-note">Your data is currently stored in this browser. Use Settings to configure reminders or import/export a backup.</div>
  </section>
  <section id="timetable" class="view">
-  <div class="toolbar"><h2>Class timetable</h2><div class="toolbar-actions"><button class="secondary" onclick="openImport()">⇧ Import timetable</button><button class="primary" onclick="openModal('class')">＋ Add class</button></div></div>
+  <div class="toolbar"><h2>Class timetable</h2><div class="toolbar-actions"><button class="secondary" id="openImportBtn" type="button" onclick="openImport()">⇧ Import timetable</button><button class="primary" id="addClassBtn" type="button" onclick="openModal('class')">＋ Add class</button></div></div>
   <div class="notice">Add classes manually, import a PDF/image/CSV, or import a calendar file (.ics). Imported rows are reviewed before they are added.</div>
   <div class="daychips" id="dayChips"></div><div class="panel"><div id="timetableList" class="list"></div></div>
  </section>
  <section id="assignments" class="view">
-  <div class="toolbar"><h2>Assignments</h2><button class="primary" onclick="openModal('task')">＋ Add task</button></div>
+  <div class="toolbar"><h2>Assignments</h2><button class="primary" id="addTaskBtn" type="button" onclick="openModal('task')">＋ Add task</button></div>
   <div class="panel"><div class="panel-head"><h3>Deadline tracker</h3><span class="tag" id="taskProgressLabel">0 completed</span></div><div id="taskProgress"></div><div id="taskList" class="list" style="margin-top:13px"></div></div>
  </section>
  <section id="exams" class="view">
-  <div class="toolbar"><h2>Examination countdown</h2><button class="primary" onclick="openModal('exam')">＋ Add exam</button></div>
+  <div class="toolbar"><h2>Examination countdown</h2><button class="primary" id="addExamBtn" type="button" onclick="openModal('exam')">＋ Add exam</button></div>
   <div class="panel"><div id="examList" class="list"></div></div>
  </section>
  <section id="planner" class="view">
@@ -95,15 +106,14 @@ main{padding:28px clamp(16px,3vw,36px) 48px;min-width:0}.topbar{display:flex;ali
   </div>
   <div class="panel" style="margin-top:15px">
    <div class="panel-head"><h3>Cloud sync & student account</h3><span class="tag" id="cloudBadge">Local only</span></div>
-   <p class="smallmuted">Sign in to sync your planner across devices. To enable cloud sync, create a Supabase project and add its project URL and public anon key below. Never paste a service-role key here.</p>
+   <p class="smallmuted">Sign in to access your planner across devices. AidMitra's cloud connection is configured for you—there is no need to enter technical settings.</p>
+   <div id="supabaseOwnerSettings" hidden aria-hidden="true"><input id="supabaseUrl" autocomplete="off"><input id="supabaseKey" autocomplete="off"></div>
    <div class="formgrid">
-    <div class="field full"><label for="supabaseUrl">Supabase project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
-    <div class="field full"><label for="supabaseKey">Supabase publishable / anon key</label><input id="supabaseKey" placeholder="Public client key (not service-role)"></div>
-    <div class="field"><label for="accountEmail">Email</label><input id="accountEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
-    <div class="field"><label for="accountPassword">Password</label><input id="accountPassword" type="password" placeholder="At least 8 characters" autocomplete="current-password"></div>
+    <div class="field full"><label for="accountEmail">Email</label><input id="accountEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="field full"><label for="accountPassword">Password</label><input id="accountPassword" type="password" placeholder="At least 8 characters" autocomplete="current-password"></div>
    </div>
    <div class="form-actions" style="justify-content:space-between;flex-wrap:wrap">
-    <div class="toolbar-actions"><button class="secondary" onclick="saveCloudConfig()">Save configuration</button><button class="secondary" onclick="signOutCloud()">Sign out</button></div>
+    <div class="toolbar-actions"><button class="secondary" onclick="signOutCloud()">Sign out</button></div>
     <div class="toolbar-actions"><button class="secondary" onclick="signInCloud()">Sign in</button><button class="primary" onclick="signUpCloud()">Create account</button></div>
    </div>
    <div id="cloudStatus" class="smallmuted" style="margin-top:10px">Cloud sync is not configured. Your data remains in this browser.</div>
@@ -111,7 +121,7 @@ main{padding:28px clamp(16px,3vw,36px) 48px;min-width:0}.topbar{display:flex;ali
   </div>
   <div class="panel" style="margin-top:15px">
    <div class="panel-head"><h3>Your data</h3></div>
-   <p class="smallmuted">Export a JSON backup or restore a previous backup. Data is local to this browser until cloud sync is added.</p>
+   <p class="smallmuted">Export a JSON backup or restore a previous backup. Your planner is stored in this browser and can sync to your AidMitra account when you sign in.</p>
    <div class="toolbar-actions"><button class="secondary" onclick="exportBackup()">Export backup</button><label class="secondary" style="display:inline-flex;align-items:center">Import backup <input type="file" accept=".json,application/json" style="display:none" onchange="importBackup(event)"></label><button class="danger" onclick="resetAll()">Reset all data</button></div>
   </div>
  </section>
@@ -129,15 +139,22 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const STORE="aidmitra_v2_data", SETTINGS="aidmitra_v2_settings";
+// Initialize cloud defaults before startup variables call loadCloudConfig().
+const DEFAULT_CLOUD_CONFIG={url:"https://cxkwepkwvvvpgefipmad.supabase.co",key:"sb_publishable_1DDleytua6XmlwP5PbaCxQ_8RFGHkmS"};
 let state=loadState(), settings=loadSettings(), cloudConfig=loadCloudConfig(), supabaseClient=null, cloudUser=null, cloudSyncBusy=false, selectedDay=DAYS[new Date().getDay()], modalType="", importRows=[], googleTokenClient=null, googleAccessToken=null;
 function loadState(){try{return JSON.parse(localStorage.getItem(STORE))||{classes:[],tasks:[],exams:[],profile:{}}}catch(e){return {classes:[],tasks:[],exams:[],profile:{}}}}
 function loadSettings(){try{return {...{remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""},...JSON.parse(localStorage.getItem(SETTINGS)||"{}")}}catch(e){return {remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""}}}
 function persist(){localStorage.setItem(STORE,JSON.stringify(state));render();maybeAutoSync()}
 function persistSettings(){localStorage.setItem(SETTINGS,JSON.stringify(settings))}
-function loadCloudConfig(){try{return JSON.parse(localStorage.getItem("aidmitra_v3_cloud")||"{}")}catch(e){return {}}}
+function loadCloudConfig(){
+  // Older versions may have stored blank fields on a device. Never let those blanks
+  // override the owner-configured defaults shipped with the app.
+  let saved={};try{saved=JSON.parse(localStorage.getItem("aidmitra_v3_cloud")||"{}")||{}}catch(e){}
+  return {url:(typeof saved.url==="string"&&saved.url.trim()?saved.url.trim():DEFAULT_CLOUD_CONFIG.url),key:(typeof saved.key==="string"&&saved.key.trim()?saved.key.trim():DEFAULT_CLOUD_CONFIG.key)}
+}
 function persistCloudConfig(){localStorage.setItem("aidmitra_v3_cloud",JSON.stringify(cloudConfig))}
 function initCloudClient(){
-  if(!cloudConfig.url||!cloudConfig.key||!window.supabase?.createClient){supabaseClient=null;updateCloudUI("Cloud sync not configured.");return}
+  if(!cloudConfig.url||!cloudConfig.key||!window.supabase?.createClient){supabaseClient=null;updateCloudUI("Cloud sync is not available. Check the app configuration.");return}
   try{
     supabaseClient=window.supabase.createClient(cloudConfig.url,cloudConfig.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
     supabaseClient.auth.getSession().then(({data})=>{cloudUser=data?.session?.user||null;updateCloudUI(cloudUser?`Signed in as ${cloudUser.email||"student"}.`:"Configured. Sign in or create an account.");if(cloudUser)syncCloudNow();});
@@ -147,28 +164,27 @@ function initCloudClient(){
 function updateCloudUI(message){
   const status=$("#cloudStatus"),badge=$("#cloudBadge");
   if(status)status.textContent=message;
-  if(badge){badge.textContent=cloudUser?"Cloud ready":supabaseClient?"Configured":"Local only";badge.className="tag"+(cloudUser?" green":"")}
+  if(badge){badge.textContent=cloudUser?"Cloud ready":supabaseClient?"Cloud configured":"Connection issue";badge.className="tag"+(cloudUser?" green":"")}
 }
 function saveCloudConfig(){
   cloudConfig.url=$("#supabaseUrl").value.trim().replace(/\/$/,"");
   cloudConfig.key=$("#supabaseKey").value.trim();
   persistCloudConfig();initCloudClient();
-  updateCloudUI(supabaseClient?"Configuration saved. Sign in or create an account.":"Enter a valid Supabase URL and public anon/publishable key.");
+  updateCloudUI(supabaseClient?"AidMitra cloud is configured. Sign in or create an account.":"AidMitra cloud is temporarily unavailable. Please reload and try again.");
 }
 async function signUpCloud(){
-  if(!supabaseClient){alert("Save your Supabase project URL and public key first.");return}
+  if(!supabaseClient){alert("AidMitra cloud is temporarily unavailable. Check your internet connection and reload the app.");return}
   const email=$("#accountEmail").value.trim(),password=$("#accountPassword").value;
   if(!email||password.length<8){alert("Enter a valid email and a password with at least 8 characters.");return}
   updateCloudUI("Creating account…");
-  const emailRedirectTo = window.location.origin + window.location.pathname;
-  const {data,error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo}});
+  const {data,error}=await supabaseClient.auth.signUp({email,password});
   if(error){updateCloudUI("Account creation failed: "+error.message);return}
   cloudUser=data.user||null;
   updateCloudUI(data.session?"Account created and signed in.":"Account created. Check your email to confirm it, then sign in.");
   if(data.session)await syncCloudNow();
 }
 async function signInCloud(){
-  if(!supabaseClient){alert("Save your Supabase project URL and public key first.");return}
+  if(!supabaseClient){alert("AidMitra cloud is temporarily unavailable. Check your internet connection and reload the app.");return}
   const email=$("#accountEmail").value.trim(),password=$("#accountPassword").value;
   if(!email||!password){alert("Enter your email and password.");return}
   updateCloudUI("Signing in…");
@@ -268,17 +284,20 @@ function selectDay(d){selectedDay=d;render()}
 function removeItem(group,id){if(confirm("Remove this item?")){state[group]=state[group].filter(x=>x.id!==id);persist()}}
 function toggleTask(id){let t=state.tasks.find(x=>x.id===id);if(t){t.done=!t.done;persist()}}
 function switchView(v){$$(".view").forEach(x=>x.classList.toggle("active",x.id===v));$$(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));const titles={dashboard:"Your dashboard",timetable:"Your timetable",assignments:"Your assignments",exams:"Your exams",planner:"Your study plan",settings:"Settings & sync"};$("#pageTitle").textContent=titles[v]||"AidMitra";if(v==="timetable")selectedDay=DAYS[new Date().getDay()];render()}
-$$(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));$$("[data-go]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.go)));
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.go)));
 function field(label,name,type="text",opts={}){let attr=opts.required?"required":"";let value=opts.value?`value="${esc(opts.value)}"`:"";let placeholder=opts.placeholder?`placeholder="${esc(opts.placeholder)}"`:"";if(type==="select")return `<div class="field ${opts.full?"full":""}"><label>${label}</label><select name="${name}" ${attr}>${opts.options.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select></div>`;return `<div class="field ${opts.full?"full":""}"><label>${label}</label><input name="${name}" type="${type}" ${attr} ${value} ${placeholder}></div>`}
 function openModal(type){modalType=type;let f="";if(type==="class"){ $("#modalTitle").textContent="Add a class";f=field("Subject","subject","text",{required:true,placeholder:"e.g. Pharmacology II"})+field("Day","day","select",{options:DAYS})+field("Start time","start","time",{required:true})+field("End time","end","time",{required:true})+field("Room / venue","room","text",{placeholder:"e.g. Block B · 204"})+field("Teacher","teacher","text",{placeholder:"Optional"})}
 if(type==="task"){ $("#modalTitle").textContent="Add an assignment";f=field("Assignment title","title","text",{required:true,placeholder:"e.g. HPLC lab record"})+field("Subject","subject","text",{placeholder:"e.g. Pharmaceutical Analysis"})+field("Due date","due","date",{required:true,value:isoDate(new Date())})+field("Type","kind","select",{options:["Assignment","Practical record","Presentation","Project","Reading","Other"]})}
 if(type==="exam"){ $("#modalTitle").textContent="Add an examination";f=field("Subject / exam name","subject","text",{required:true,placeholder:"e.g. Pharmacology midterm"})+field("Exam date","date","date",{required:true,value:isoDate(new Date())})+field("Venue","venue","text",{placeholder:"Optional"})}
-$("#formFields").innerHTML=f;$("#modalBackdrop").classList.add("open")}
-function closeModal(){$("#modalBackdrop").classList.remove("open")}
+$("#formFields").innerHTML=f;const backdrop=$("#modalBackdrop");backdrop.classList.add("open");backdrop.style.display="flex";const first=backdrop.querySelector("input,select");if(first)first.focus()}
+function closeModal(){const backdrop=$("#modalBackdrop");backdrop.classList.remove("open");backdrop.style.display="none"}
 $("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
 $("#itemForm").addEventListener("submit",e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target).entries()),item={...f,id:uid(),createdAt:new Date().toISOString()};if(modalType==="class"){item.color=["#3768d8","#39a57a","#8a63d2","#e49b36","#d45d76"][state.classes.length%5];state.classes.push(item)}else if(modalType==="task"){item.done=false;state.tasks.push(item)}else state.exams.push(item);closeModal();persist()});
-function openImport(){$("#importBackdrop").classList.add("open");$("#importStatus").textContent="";$("#importPreview").innerHTML="";$("#confirmImport").disabled=true;importRows=[]}
-function closeImport(){$("#importBackdrop").classList.remove("open")}
+function openImport(){const backdrop=$("#importBackdrop");backdrop.classList.add("open");backdrop.style.display="flex";$("#importStatus").textContent="";$("#importPreview").innerHTML="";$("#confirmImport").disabled=true;importRows=[]}
+function runButtonAction(action,label){try{action()}catch(error){console.error("AidMitra action failed:",error);alert("AidMitra could not open this feature. Refresh the page once. If it continues, send us this error: "+(error?.message||String(error)));}}
+// Bind primary creation/import controls explicitly instead of relying on inline HTML handlers.
+
+function closeImport(){const backdrop=$("#importBackdrop");backdrop.classList.remove("open");backdrop.style.display="none"}
 $("#importBackdrop").addEventListener("click",e=>{if(e.target.id==="importBackdrop")closeImport()});
 $("#timetableFile").addEventListener("change",async e=>{let file=e.target.files[0];if(!file)return;$("#importStatus").textContent="Reading file…";$("#importPreview").innerHTML="";$("#confirmImport").disabled=true;try{let text="";let ext=file.name.split(".").pop().toLowerCase();if(ext==="ics"){importRows=parseICS(await file.text());renderImportPreview();return}if(ext==="csv"){text=await file.text();importRows=parseCSV(text);renderImportPreview();return}if(ext==="pdf"){text=await readPDF(file)}else if(file.type.startsWith("image/")){text=await readImage(file)}else throw Error("Unsupported file type.");importRows=parseTimetableText(text);renderImportPreview()}catch(err){$("#importStatus").textContent="Could not automatically read this file: "+err.message+". Try a clearer image/PDF or use CSV/manual entry."}});
 function loadScript(src){return new Promise((resolve,reject)=>{let s=document.createElement("script");s.src=src;s.onload=resolve;s.onerror=()=>reject(Error("Could not load parsing library (check internet connection)."));document.head.appendChild(s)})}
@@ -306,7 +325,9 @@ async function fetchGoogleEvents(){let now=new Date(),end=new Date(now.getTime()
 function exportBackup(){let blob=new Blob([JSON.stringify({state,settings,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="aidmitra-backup.json";a.click();URL.revokeObjectURL(a.href)}
 function importBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let v=JSON.parse(r.result);state=v.state||v;settings={...settings,...(v.settings||{})};persist();persistSettings();updateNotifyStatus();alert("Backup imported.")}catch(err){alert("That backup file could not be read.")}};r.readAsText(f)}
 function resetAll(){if(confirm("Delete all AidMitra classes, tasks, exams and profile data from this browser?")){state={classes:[],tasks:[],exams:[],profile:{}};persist()}}
-function initSettings(){ $("#supabaseUrl").value=cloudConfig.url||"";$("#supabaseKey").value=cloudConfig.key||""; $("#studentName").value=state.profile?.name||"";$("#studentCourse").value=state.profile?.course||"";$("#googleClientId").value=settings.googleClientId||"";updateNotifyStatus();$("#googleStatus").textContent=settings.googleClientId?"Client ID saved; calendar not connected in this session.":"Google Calendar not connected."}
+function initSettings(){ $("#supabaseUrl").value=cloudConfig.url||DEFAULT_CLOUD_CONFIG.url;$("#supabaseKey").value=cloudConfig.key||DEFAULT_CLOUD_CONFIG.key; $("#studentName").value=state.profile?.name||"";$("#studentCourse").value=state.profile?.course||"";$("#googleClientId").value=settings.googleClientId||"";updateNotifyStatus();$("#googleStatus").textContent=settings.googleClientId?"Client ID saved; calendar not connected in this session.":"Google Calendar not connected."}
+// Explicitly expose handlers used by generated cards and legacy inline controls.
+Object.assign(window,{switchView,selectDay,openModal,closeModal,openImport,closeImport,confirmImportedRows,removeItem,toggleTask,generateStudyPlan,saveProfile,saveReminderSettings,testNotification,connectGoogleCalendar,saveGoogleConfig,saveCloudConfig,signOutCloud,signInCloud,signUpCloud,syncCloudNow,exportBackup,importBackup,resetAll});
 render();initSettings();initCloudClient();
 if("serviceWorker"in navigator&&location.protocol!=="file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{})}
 setInterval(checkReminders,30000);checkReminders();
