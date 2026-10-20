@@ -140,12 +140,13 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const STORE="aidmitra_v2_data", SETTINGS="aidmitra_v2_settings";
+// Initialize cloud defaults before startup variables call loadCloudConfig().
+const DEFAULT_CLOUD_CONFIG={url:"https://cxkwepkwvvvpgefipmad.supabase.co",key:"sb_publishable_1DDleytua6XmlwP5PbaCxQ_8RFGHkmS"};
 let state=loadState(), settings=loadSettings(), cloudConfig=loadCloudConfig(), supabaseClient=null, cloudUser=null, cloudSyncBusy=false, selectedDay=DAYS[new Date().getDay()], modalType="", importRows=[], googleTokenClient=null, googleAccessToken=null;
 function loadState(){try{return JSON.parse(localStorage.getItem(STORE))||{classes:[],tasks:[],exams:[],profile:{}}}catch(e){return {classes:[],tasks:[],exams:[],profile:{}}}}
 function loadSettings(){try{return {...{remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""},...JSON.parse(localStorage.getItem(SETTINGS)||"{}")}}catch(e){return {remindersEnabled:true,classLead:15,deadlineAlerts:true,examAlerts:true,googleClientId:""}}}
 function persist(){localStorage.setItem(STORE,JSON.stringify(state));render();maybeAutoSync()}
 function persistSettings(){localStorage.setItem(SETTINGS,JSON.stringify(settings))}
-const DEFAULT_CLOUD_CONFIG={url:"https://cxkwepkwvvvpgefipmad.supabase.co",key:"sb_publishable_1DDleytua6XmlwP5PbaCxQ_8RFGHkmS"};
 function loadCloudConfig(){try{return {...DEFAULT_CLOUD_CONFIG,...JSON.parse(localStorage.getItem("aidmitra_v3_cloud")||"{}")}}catch(e){return {...DEFAULT_CLOUD_CONFIG}}}
 function persistCloudConfig(){localStorage.setItem("aidmitra_v3_cloud",JSON.stringify(cloudConfig))}
 function initCloudClient(){

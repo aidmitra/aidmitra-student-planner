@@ -1,4 +1,4 @@
-# AidMitra Student Planner — Supabase-configured build — navigation/cache fix
+# AidMitra Student Planner — Supabase-configured build — initialization-order fix
 
 This build has AidMitra's existing Supabase project URL and **publishable** client key preconfigured, so students do not need to enter Supabase credentials themselves.
 
@@ -32,3 +32,8 @@ This version adds direct navigation handlers to the sidebar and updates the serv
 This build explicitly binds the Add class, Add task, Add exam, and Import timetable buttons and exposes app handlers on `window` for reliable browser interaction. The service-worker cache version was bumped to force the updated app shell to replace the previous cached build.
 
 After uploading the files, wait for GitHub Pages to deploy, then hard-refresh the site. If using an installed PWA on Android, fully close it and reopen it; if it still shows the old build, clear site data for `aidmitra.github.io` and reopen the site.
+
+
+## Fix in this build
+
+The startup failure was caused by `loadCloudConfig()` running before `DEFAULT_CLOUD_CONFIG` was initialized. That exception stopped the rest of the main script, which left `selectedDay`, `modalType`, and `importRows` uninitialized and made navigation/modal/import clicks throw ReferenceErrors. The default config is now declared before startup initialization, and the service-worker cache was bumped to `aidmitra-shell-v7`.
