@@ -197,44 +197,81 @@ async function signOutCloud(){
   cloudUser=null;updateCloudUI("Signed out. Your local data remains on this device.");
 }
 async function syncCloudNow(){
-  if(!supabaseClient||!cloudUser){updateCloudUI("Configure Supabase and sign in to sync.");return}
-  if(cloudSyncBusy)return;cloudSyncBusy=true;updateCloudUI("Syncing planner…");
+  if(!supabaseClient||!cloudUser){updateCloudUI("Cloud sync is not ready. Please sign in again.");return}
+  if(cloudSyncBusy)return;cloudSyncBusy=true;updateCloudUI("Syncing changes across your devices…");
   try{
-    const payload={user_id:cloudUser.id,data:state,updated_at:new Date().toISOString()};
     const {data:remote,error:readError}=await supabaseClient.from("student_planners").select("data,updated_at").eq("user_id",cloudUser.id).maybeSingle();
     if(readError)throw readError;
-    if(remote?.data){
-      const localStamp=localStorage.getItem("aidmitra_v3_last_sync")||"";
-      const remoteStamp=remote.updated_at||"";
-      // First sync: merge records by stable IDs to avoid silently discarding local work.
-      if(!localStamp){
-        state=mergePlannerData(remote.data,state);
-        localStorage.setItem(STORE,JSON.stringify(state));
-        const {error:upsertError}=await supabaseClient.from("student_planners").upsert({user_id:cloudUser.id,data:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});
-        if(upsertError)throw upsertError;
-      }else{
-        const {data:localRemote,error:readAgain}=await supabaseClient.from("student_planners").select("data,updated_at").eq("user_id",cloudUser.id).single();
-        if(readAgain)throw readAgain;
-        // Keep the local copy as the working version and push it after first sync; users can export backups.
-        const {error:upsertError}=await supabaseClient.from("student_planners").upsert({user_id:cloudUser.id,data:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});
-        if(upsertError)throw upsertError;
-      }
+    const localNow=loadState();
+    const baselineRaw=localStorage.getItem("aidmitra_v3_last_sync_state");
+    let merged;
+    if(!remote?.data){
+      // First device to sync creates the cloud record from its local planner.
+      merged=normalisePlannerData(localNow);
+    }else if(!baselineRaw){
+      // A device without a prior sync baseline must not blindly overwrite cloud data.
+      // Merge its local items with the existing cloud planner by stable IDs.
+      merged=mergePlannerData(remote.data,localNow);
     }else{
-      const {error:upsertError}=await supabaseClient.from("student_planners").upsert(payload,{onConflict:"user_id"});
-      if(upsertError)throw upsertError;
+      let baseline;
+      try{baseline=normalisePlannerData(JSON.parse(baselineRaw))}catch(e){baseline={classes:[],tasks:[],exams:[],profile:{}}}
+      merged=threeWayMergePlannerData(baseline,localNow,remote.data);
     }
+    const {error:upsertError}=await supabaseClient.from("student_planners").upsert({user_id:cloudUser.id,data:merged,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+    if(upsertError)throw upsertError;
+    state=merged;
+    localStorage.setItem(STORE,JSON.stringify(state));
     localStorage.setItem("aidmitra_v3_last_sync",new Date().toISOString());
-    localStorage.setItem(STORE,JSON.stringify(state));render();updateCloudUI("Sync complete. This device's planner is saved to your cloud account.");
-  }catch(e){updateCloudUI("Sync failed: "+(e.message||"Check your Supabase table and Row Level Security setup."))}
+    localStorage.setItem("aidmitra_v3_last_sync_state",JSON.stringify(state));
+    render();updateCloudUI("Sync complete. Your planner is up to date on this device.");
+  }catch(e){updateCloudUI("Sync failed: "+(e.message||"Check your internet connection and cloud permissions."))}
   finally{cloudSyncBusy=false}
 }
-function mergePlannerData(remote,local){
-  const result={classes:[],tasks:[],exams:[],profile:{...(remote.profile||{}),...(local.profile||{})}};
+function normalisePlannerData(value){
+  const d=value&&typeof value==="object"?value:{};
+  return {classes:Array.isArray(d.classes)?d.classes:[],tasks:Array.isArray(d.tasks)?d.tasks:[],exams:Array.isArray(d.exams)?d.exams:[],profile:d.profile&&typeof d.profile==="object"?d.profile:{}};
+}
+function stableItemKey(item){return item?.id||JSON.stringify(item)}
+function threeWayMergePlannerData(baseline,local,remote){
+  baseline=normalisePlannerData(baseline);local=normalisePlannerData(local);remote=normalisePlannerData(remote);
+  const result={classes:[],tasks:[],exams:[],profile:{...(baseline.profile||{}),...(remote.profile||{}),...(local.profile||{})}};
   for(const group of ["classes","tasks","exams"]){
-    const map=new Map();(remote[group]||[]).forEach(x=>map.set(x.id||JSON.stringify(x),x));(local[group]||[]).forEach(x=>map.set(x.id||JSON.stringify(x),x));result[group]=[...map.values()];
+    const b=new Map(baseline[group].map(x=>[stableItemKey(x),x]));
+    const l=new Map(local[group].map(x=>[stableItemKey(x),x]));
+    const r=new Map(remote[group].map(x=>[stableItemKey(x),x]));
+    const keys=new Set([...b.keys(),...l.keys(),...r.keys()]);
+    for(const key of keys){
+      const bv=b.get(key),lv=l.get(key),rv=r.get(key);
+      const lc=!sameValue(lv,bv),rc=!sameValue(rv,bv);
+      let chosen;
+      if(lc&&!rc)chosen=lv;                 // only this device changed it (including deletion)
+      else if(rc&&!lc)chosen=rv;            // only another device changed it (including deletion)
+      else if(lc&&rc)chosen=lv!==undefined?lv:rv; // conflict: prefer local edit, preserve remote if local deleted
+      else chosen=rv!==undefined?rv:lv;
+      if(chosen!==undefined)result[group].push(chosen);
+    }
+  }
+  return result;
+}
+function sameValue(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+function mergePlannerData(remote,local){
+  remote=normalisePlannerData(remote);local=normalisePlannerData(local);
+  // During an upgrade from older versions there is no saved three-way baseline.
+  // Prefer the existing cloud version for duplicate IDs, while retaining local-only items.
+  const result={classes:[],tasks:[],exams:[],profile:{...(local.profile||{}),...(remote.profile||{})}};
+  for(const group of ["classes","tasks","exams"]){
+    const map=new Map();local[group].forEach(x=>map.set(stableItemKey(x),x));remote[group].forEach(x=>map.set(stableItemKey(x),x));result[group]=[...map.values()];
   }return result;
 }
 function maybeAutoSync(){if(supabaseClient&&cloudUser&&!cloudSyncBusy){clearTimeout(window.aidmitraSyncTimer);window.aidmitraSyncTimer=setTimeout(syncCloudNow,1200)}}
+// Pull cloud changes on active devices even when the student has not edited locally.
+// Polling avoids requiring a separate Supabase Realtime publication setup.
+if(typeof window!=="undefined"){
+  window.setInterval(()=>{if(document.visibilityState==="visible"&&supabaseClient&&cloudUser&&!cloudSyncBusy)syncCloudNow()},15000);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&supabaseClient&&cloudUser&&!cloudSyncBusy)syncCloudNow()});
+  window.addEventListener("focus",()=>{if(supabaseClient&&cloudUser&&!cloudSyncBusy)syncCloudNow()});
+}
+
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function fmtDate(s){return s?new Date(s+"T12:00:00").toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"}):"No date"}
