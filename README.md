@@ -1,4 +1,4 @@
-# AidMitra Student Planner — Supabase-configured build
+# AidMitra Student Planner — Supabase-configured build — navigation/cache fix
 
 This build has AidMitra's existing Supabase project URL and **publishable** client key preconfigured, so students do not need to enter Supabase credentials themselves.
 
@@ -22,3 +22,7 @@ This build has AidMitra's existing Supabase project URL and **publishable** clie
 ## Important
 
 This change preconfigures the client connection; it does not itself verify that the live Supabase database schema, authentication settings, or row-level security are correct. Keep the public repository limited to client-side publishable credentials. Do not upload database passwords, access tokens, or secret/service-role keys.
+
+
+## Navigation fix (MVP 3.4)
+This version adds direct navigation handlers to the sidebar and updates the service-worker cache strategy so the latest page is fetched on refresh. Upload all six files to the repository root and commit to `main`. After deployment, open the site and hard-refresh with Ctrl+Shift+R. On Android, if the old page remains, clear the site data/cache for aidmitra.github.io or open the site in a private tab once.

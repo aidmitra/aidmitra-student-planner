@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#142b4a">
-<title>AidMitra — Student Planner MVP 3.1</title>
+<title>AidMitra — Student Planner MVP 3.4</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--navy:#142b4a;--navy2:#203d63;--blue:#3768d8;--mint:#c9f4df;--bg:#f4f7fb;--ink:#17243a;--muted:#718096;--line:#e3eaf3;--white:#fff;--red:#c84350;--green:#278153;--amber:#a96c11;--shadow:0 10px 35px #1b35500a}
@@ -32,12 +32,12 @@ main{padding-top:32px}.topbar{margin-bottom:27px}.eyebrow{letter-spacing:1.8px;f
 <aside class="sidebar">
  <div class="brand"><div class="logo"><svg viewBox="0 0 48 48" aria-label="AidMitra logo"><path d="M8 14c6-3 11-2 16 2v21c-5-4-10-5-16-2z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/><path d="M40 14c-6-3-11-2-16 2v21c5-4 10-5 16-2z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/><path d="M24 8v5M21.5 10.5h5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div><div>AidMitra<small>YOUR STUDENT LIFE, IN SYNC</small></div></div>
  <nav class="nav" aria-label="Main navigation">
-  <button class="active" data-view="dashboard"><span class="ico">◫</span>Dashboard</button>
-  <button data-view="timetable"><span class="ico">▦</span>Timetable</button>
-  <button data-view="assignments"><span class="ico">✓</span>Assignments</button>
-  <button data-view="exams"><span class="ico">◷</span>Exams</button>
-  <button data-view="planner"><span class="ico">✦</span>Study plan</button>
-  <button data-view="settings"><span class="ico">⚙</span>Settings</button>
+  <button class="active" data-view="dashboard" onclick="switchView('dashboard')"><span class="ico">◫</span>Dashboard</button>
+  <button data-view="timetable" onclick="switchView('timetable')"><span class="ico">▦</span>Timetable</button>
+  <button data-view="assignments" onclick="switchView('assignments')"><span class="ico">✓</span>Assignments</button>
+  <button data-view="exams" onclick="switchView('exams')"><span class="ico">◷</span>Exams</button>
+  <button data-view="planner" onclick="switchView('planner')"><span class="ico">✦</span>Study plan</button>
+  <button data-view="settings" onclick="switchView('settings')"><span class="ico">⚙</span>Settings</button>
  </nav>
  <div class="sidebar-bottom"><div class="sync-card"><strong>Make room to focus.</strong>AidMitra helps you plan ahead, one class and one deadline at a time.</div></div>
 </aside>
@@ -279,7 +279,7 @@ function selectDay(d){selectedDay=d;render()}
 function removeItem(group,id){if(confirm("Remove this item?")){state[group]=state[group].filter(x=>x.id!==id);persist()}}
 function toggleTask(id){let t=state.tasks.find(x=>x.id===id);if(t){t.done=!t.done;persist()}}
 function switchView(v){$$(".view").forEach(x=>x.classList.toggle("active",x.id===v));$$(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));const titles={dashboard:"Your dashboard",timetable:"Your timetable",assignments:"Your assignments",exams:"Your exams",planner:"Your study plan",settings:"Settings & sync"};$("#pageTitle").textContent=titles[v]||"AidMitra";if(v==="timetable")selectedDay=DAYS[new Date().getDay()];render()}
-$$(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));$$("[data-go]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.go)));
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.go)));
 function field(label,name,type="text",opts={}){let attr=opts.required?"required":"";let value=opts.value?`value="${esc(opts.value)}"`:"";let placeholder=opts.placeholder?`placeholder="${esc(opts.placeholder)}"`:"";if(type==="select")return `<div class="field ${opts.full?"full":""}"><label>${label}</label><select name="${name}" ${attr}>${opts.options.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select></div>`;return `<div class="field ${opts.full?"full":""}"><label>${label}</label><input name="${name}" type="${type}" ${attr} ${value} ${placeholder}></div>`}
 function openModal(type){modalType=type;let f="";if(type==="class"){ $("#modalTitle").textContent="Add a class";f=field("Subject","subject","text",{required:true,placeholder:"e.g. Pharmacology II"})+field("Day","day","select",{options:DAYS})+field("Start time","start","time",{required:true})+field("End time","end","time",{required:true})+field("Room / venue","room","text",{placeholder:"e.g. Block B · 204"})+field("Teacher","teacher","text",{placeholder:"Optional"})}
 if(type==="task"){ $("#modalTitle").textContent="Add an assignment";f=field("Assignment title","title","text",{required:true,placeholder:"e.g. HPLC lab record"})+field("Subject","subject","text",{placeholder:"e.g. Pharmaceutical Analysis"})+field("Due date","due","date",{required:true,value:isoDate(new Date())})+field("Type","kind","select",{options:["Assignment","Practical record","Presentation","Project","Reading","Other"]})}
